@@ -4,4 +4,9 @@ describe("Configuration setup", function(){
 		expect(config.mode).toBe('local');
 		next();
 	});
+	it("should load production configurations", function(next){
+		var config = require('../config.js')('production');
+		expect(config.mode).toBe('production');
+		next();
+	});
 });
