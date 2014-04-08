@@ -34,13 +34,13 @@ var T = {};
 	 * Send list of terms to server
  	*/
 	var emitTerms = function(){
-		var terms = $('#search').attr('value').split(',');
+		var terms = $('#search').val().split(',');
 		socket.emit('terms', {'terms':terms});		
 	}
 
 
 	// On connect, send list of terms to server
-	socket.on('connect', emitTerms());
+	// socket.on('connect', emitTerms());
 
 	// On submit, send list of terms to server
 	$('#search-form').on('submit', function(e){
