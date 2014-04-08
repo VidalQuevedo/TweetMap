@@ -47,10 +47,12 @@ MongoClient.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port +
 		// var stream = T.stream('statuses/sample');
 		var madison = ['-89.566397','42.998071','-89.246452','43.171916'];
 		var stream = T.stream('statuses/filter', {
-			locations:madison
+			locations: madison
 		});
 		stream.on('tweet', function(tweet){
-			console.log(tweet);
+			if(tweet.coordinates !== null){
+				console.log(tweet.coordinates);
+			}
 			// db.collection('tweets').insert(tweet, function(err, doc){
 			// 	if (err) throw err;
 			// 	// console.log(doc);
