@@ -11,6 +11,7 @@
  var hbs = require('hbs');
  var MongoClient = require('mongodb').MongoClient;
  var Twit = require('twit');
+ var io = require('socket.io').listen(8080);
 
  var app = express();
 
@@ -52,16 +53,27 @@ MongoClient.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port +
 		stream.on('tweet', function(tweet){
 			if(tweet.coordinates !== null){
 				console.log(tweet.coordinates);
+				io.sockets.emit('tweet',tweet);
+
 			}
 			// db.collection('tweets').insert(tweet, function(err, doc){
 			// 	if (err) throw err;
 			// 	// console.log(doc);
 			// });
-		});
+	});
+
 
 		// Create HTTP server
 		http.createServer(app).listen(config.port, function(){
 			console.log('Express server listening on port ' + config.port);
 		});
+
+		// Sockets
+		// io.sockets.on('connection', function (socket) {
+		// 	socket.emit('news', { hello: 'world' });
+		// 	socket.on('my other event', function (data) {
+		// 		console.log(data);
+		// 	});
+		// });		
 	}
 });

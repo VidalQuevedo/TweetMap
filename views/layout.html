@@ -13,5 +13,11 @@
 <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
 <script type="text/javascript" src="javascripts/tweetmap.js"></script>
-
+<script type="text/javascript" src="javascripts/socket.io.min.js"></script>
+<script>
+  var socket = io.connect('http://localhost:8080');
+  socket.on('tweet', function (data) {
+    console.log(data);
+  });
+</script>
 </html>
