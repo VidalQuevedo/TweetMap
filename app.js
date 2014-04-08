@@ -40,8 +40,8 @@ MongoClient.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port +
 	if (err) { 
 		console.log("Couldn't connect to database. Please check your configuration in config.js (" + err + ")");
 	} else {
-		http.createServer(app).listen(config.mongo.port, function(){
-			console.log('Express server listening on port ' + config.mongo.port);
+		http.createServer(app).listen(config.port, function(){
+			console.log('Express server listening on port ' + config.port);
 		});
 	}
 });
