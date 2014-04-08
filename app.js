@@ -10,7 +10,6 @@
  var path = require('path');
  var hbs = require('hbs');
  var MongoClient = require('mongodb').MongoClient;
- // var Twit = require('twit');
  var twit = new (require('twit'))(config.twit);
  var io = require('socket.io').listen(8080);
  var app = express();
@@ -52,10 +51,9 @@ MongoClient.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port +
 
 				console.log('Terms received');
 
-				// Start collecting Tweets
-				console.log(stream);
+				// Start collecting Tweets with terms
 				var stream = twit.stream('statuses/filter', {
-					track: ["cat", "cats", "kitty", "kitten", "kittens"],
+					track: terms,
 					language:"en"
 				});
 
