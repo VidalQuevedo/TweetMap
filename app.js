@@ -45,16 +45,15 @@ MongoClient.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port +
 
 		// Start collecting Tweets
 		T = new Twit(config.twit);
-		// var stream = T.stream('statuses/sample');
-		var madison = ['-89.566397','42.998071','-89.246452','43.171916'];
 		var stream = T.stream('statuses/filter', {
-			locations: madison
+			track: ["cat", "cats", "kitty", "kitten", "kittens"],
+			language:"en"
 		});
 		stream.on('tweet', function(tweet){
-			if(tweet.coordinates !== null){
-				console.log(tweet.coordinates);
+			console.log(tweet.text);
+			if(tweet.coordinates !== null && tweet.entities.media){
+				// broadcast
 				io.sockets.emit('tweet',tweet);
-
 			}
 			// db.collection('tweets').insert(tweet, function(err, doc){
 			// 	if (err) throw err;
