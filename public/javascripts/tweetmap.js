@@ -51,8 +51,8 @@ var T = {};
 	
 	socket.on('tweet', function (data) {
 
-    // console.log(data.text);
-  //   var coordinates = data.coordinates.coordinates;
+    console.log(data.text);
+    var coordinates = data.coordinates.coordinates;
 
   //   media = data.entities.media;
   //   media.forEach(function(i){
@@ -60,9 +60,9 @@ var T = {};
   //   		var img = '<img src="'+i.media_url+'"/>'
   //   	}
   //   });
-		// L.marker([coordinates[1], coordinates[0]]).addTo(map)
-		// .bindPopup(data.text)
-		// .openPopup();
+		L.marker([coordinates[1], coordinates[0]]).addTo(T.map)
+		.bindPopup(data.text)
+		.openPopup();
 	});
 
 	T.socket = socket;

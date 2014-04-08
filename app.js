@@ -49,25 +49,28 @@ MongoClient.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port +
 			// the client on connect
 			socket.on('terms', function(data){
 
-				console.log('Terms received');
+				console.log('Terms received:');
+				console.log(data.terms);
 
 				// Start collecting Tweets with terms
 				var stream = twit.stream('statuses/filter', {
-					track: terms,
+					track: data.terms,
 					language:"en"
 				});
 
-				// stream.on('tweet', function(tweet){
-				// 	console.log(tweet.text);
-				// 	if(tweet.coordinates !== null && tweet.entities.media){
-				// 		// broadcast
-				// 		io.sockets.emit('tweet',tweet);
-				// 	}
-				// 	db.collection('tweets').insert(tweet, function(err, doc){
-				// 		if (err) throw err;
-				// 		// console.log(doc);
-				// 	});
-				// });
+				stream.on('tweet', function(tweet){
+					
+					// if(tweet.coordinates !== null && tweet.entities.media){
+					// 	// broadcast
+					if(tweet.coordinates !== null){
+						console.log(tweet.text);
+						io.sockets.emit('tweet',tweet);
+					}
+					// db.collection('tweets').insert(tweet, function(err, doc){
+					// 	if (err) throw err;
+					// 	// console.log(doc);
+					// });
+				});
 		});
 
 		});
