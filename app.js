@@ -49,7 +49,7 @@ MongoClient.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port +
 			// console.log(tweet);
 			db.collection('tweets').insert(tweet, function(err, doc){
 				if (err) throw err;
-				console.log(doc);
+				// console.log(doc);
 			});
 		});
 
