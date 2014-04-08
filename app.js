@@ -45,6 +45,7 @@ MongoClient.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port +
 		// Start collecting Tweets
 		T = new Twit(config.twit);
 		var stream = T.stream('statuses/sample');
+		console.log('Collecting tweets...');
 		stream.on('tweet', function(tweet){
 			// console.log(tweet);
 			db.collection('tweets').insert(tweet, function(err, doc){
