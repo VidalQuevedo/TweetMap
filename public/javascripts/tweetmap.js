@@ -2,6 +2,8 @@
 var T = {};
 
 
+
+
 // Map
 (function($, T){
 
@@ -19,6 +21,10 @@ var T = {};
 		layers: minimal
 	});
 	
+	if (typeof(map) !== 'undefined') {
+		$('#map').css('height',$(window).height());
+	}
+
 	T.map = map;
 
 })(jQuery,T);

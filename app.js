@@ -60,12 +60,13 @@ MongoClient.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port +
 
 				stream.on('tweet', function(tweet){
 					
-					// if(tweet.coordinates !== null && tweet.entities.media){
-					// 	// broadcast
+					// broadcast
 					if(tweet.coordinates !== null){
 						console.log(tweet.text);
 						io.sockets.emit('tweet',tweet);
 					}
+					
+					// Optional
 					// db.collection('tweets').insert(tweet, function(err, doc){
 					// 	if (err) throw err;
 					// 	// console.log(doc);
@@ -75,19 +76,10 @@ MongoClient.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port +
 
 		});
 
-		
-
 		// Create HTTP server
 		http.createServer(app).listen(config.port, function(){
 			console.log('Express server listening on port ' + config.port);
 		});
-
-		// Sockets
-		// io.sockets.on('connection', function (socket) {
-		// 	socket.emit('news', { hello: 'world' });
-		// 	socket.on('my other event', function (data) {
-		// 		console.log(data);
-		// 	});
-		// });		
+	
 }
 });
