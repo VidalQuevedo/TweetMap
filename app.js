@@ -10,9 +10,9 @@
  var path = require('path');
  var hbs = require('hbs');
  var MongoClient = require('mongodb').MongoClient;
- var Twit = require('twit');
+ // var Twit = require('twit');
+ var twit = new (require('twit'))(config.twit);
  var io = require('socket.io').listen(8080);
-
  var app = express();
 
 // all environments
@@ -43,38 +43,38 @@ MongoClient.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port +
 		console.log("Couldn't connect to database. Please check your configuration in config.js (" + err + ")");
 	} else {
 
-		// enable socket io to act on connect
+		// Enable sockets to start exchanging data with front end
 		io.sockets.on('connection', function (socket) {
 
-			socket.on('terms', function(msg){
-				console.log(msg);
-			});
-			// retrieve 
-			//start or reset Twit
-			// socket.emit('news', { hello: 'world' });
-			// socket.on('my other event', function (data) {
-			// 	console.log(data);
-			// });
+			// The 'terms' event is triggered by 
+			// the client on connect
+			socket.on('terms', function(data){
+
+				console.log('Terms received');
+
+				// Start collecting Tweets
+				console.log(stream);
+				var stream = twit.stream('statuses/filter', {
+					track: ["cat", "cats", "kitty", "kitten", "kittens"],
+					language:"en"
+				});
+
+				// stream.on('tweet', function(tweet){
+				// 	console.log(tweet.text);
+				// 	if(tweet.coordinates !== null && tweet.entities.media){
+				// 		// broadcast
+				// 		io.sockets.emit('tweet',tweet);
+				// 	}
+				// 	db.collection('tweets').insert(tweet, function(err, doc){
+				// 		if (err) throw err;
+				// 		// console.log(doc);
+				// 	});
+				// });
 		});
 
-		// Start collecting Tweets
-		// T = new Twit(config.twit);
-		// var stream = T.stream('statuses/filter', {
-		// 	track: ["cat", "cats", "kitty", "kitten", "kittens"],
-		// 	language:"en"
-		// });
-		// stream.on('tweet', function(tweet){
-		// 	console.log(tweet.text);
-		// 	if(tweet.coordinates !== null && tweet.entities.media){
-		// 		// broadcast
-		// 		io.sockets.emit('tweet',tweet);
-		// 	}
-			// db.collection('tweets').insert(tweet, function(err, doc){
-			// 	if (err) throw err;
-			// 	// console.log(doc);
-			// });
-	// });
+		});
 
+		
 
 		// Create HTTP server
 		http.createServer(app).listen(config.port, function(){
@@ -88,5 +88,5 @@ MongoClient.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port +
 		// 		console.log(data);
 		// 	});
 		// });		
-	}
+}
 });
