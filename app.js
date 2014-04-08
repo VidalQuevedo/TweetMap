@@ -10,6 +10,7 @@
  var path = require('path');
  var hbs = require('hbs');
  var MongoClient = require('mongodb').MongoClient;
+ var Twit = require('twit');
 
  var app = express();
 
@@ -40,6 +41,19 @@ MongoClient.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port +
 	if (err) { 
 		console.log("Couldn't connect to database. Please check your configuration in config.js (" + err + ")");
 	} else {
+
+		// Start collecting Tweets
+		T = new Twit(config.twit);
+		var stream = T.stream('statuses/sample');
+		stream.on('tweet', function(tweet){
+			// console.log(tweet);
+			db.collection('tweets').insert(tweet, function(err, doc){
+				if (err) throw err;
+				console.log(doc);
+			});
+		});
+
+		// Create HTTP server
 		http.createServer(app).listen(config.port, function(){
 			console.log('Express server listening on port ' + config.port);
 		});
