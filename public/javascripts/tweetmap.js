@@ -57,6 +57,9 @@ var T = {};
 			//disable #s
 			$('#s').attr('disabled','disabled');
 
+			//display pulsating icon
+			$("#pulsating-icon").css('display', 'block');
+
 			// toggle classes
 			$('#search-form :submit').toggleClass('btn-success btn-danger');
 			$('#search-form :submit span').toggleClass('glyphicon-play glyphicon-stop');			
@@ -68,7 +71,10 @@ var T = {};
 			
 			//enable #s
 			$('#s').removeAttr('disabled');
-			
+
+			//hide pulsating icon
+			$("#pulsating-icon").css('display', 'none');
+
 			// toggle classes
 			$('#search-form :submit').toggleClass('btn-danger btn-success');
 			$('#search-form :submit span').toggleClass('glyphicon-stop glyphicon-play');
