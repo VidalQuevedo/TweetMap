@@ -46,21 +46,35 @@ var T = {};
 	$('#search-form').on('submit', function(e){
 		e.preventDefault();
 
-		// if empty, return false
+		// if no terms are being sent, return false
 		if ($('#s').val() == '') return false;
 
 		if ($('#search-form :submit').hasClass('btn-success')){
 
 			// Send terms to socket
 			emitTerms();
-		} else if ($('#search-form :submit').hasClass('btn-danger')){
+
+			//disable #s
+			$('#s').attr('disabled','disabled');
+
+			// toggle classes
+			$('#search-form :submit').toggleClass('btn-success btn-danger');
+			$('#search-form :submit span').toggleClass('glyphicon-play glyphicon-stop');			
+
+	} else if ($('#search-form :submit').hasClass('btn-danger')){
+		console.log('yp');
 			// Emit disconnect
 			//emitDisconnect();
+			//eable #s
+			$('#s').removeAttr('disabled');
+			
+			// toggle classes
+			$('#search-form :submit').toggleClass('btn-danger btn-success');
+			$('#search-form :submit span').toggleClass('glyphicon-stop glyphicon-play');
+
 		}
 		
-		// toggle classes
-		$('#search-form :submit').toggleClass('btn-danger');
-		$('#search-form :submit span').toggleClass('glyphicon-stop');
+
 	});
 	
 	socket
