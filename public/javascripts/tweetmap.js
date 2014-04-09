@@ -39,7 +39,7 @@ var T = {};
 	};
 
 	var emitDisconnect = function(){
-		socket.emit('disconnect');
+		socket.emit('stop_stream');
 	}
 
 	// On submit, send list of terms to server
@@ -62,10 +62,11 @@ var T = {};
 			$('#search-form :submit span').toggleClass('glyphicon-play glyphicon-stop');			
 
 	} else if ($('#search-form :submit').hasClass('btn-danger')){
-		console.log('yp');
+			
 			// Emit disconnect
-			//emitDisconnect();
-			//eable #s
+			emitDisconnect();
+			
+			//enable #s
 			$('#s').removeAttr('disabled');
 			
 			// toggle classes
