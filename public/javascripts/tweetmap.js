@@ -53,12 +53,6 @@ var T = {};
     console.log(data.text);
     var coordinates = data.coordinates.coordinates;
 
-  //   media = data.entities.media;
-  //   media.forEach(function(i){
-  //   	if(i.type == "photo"){
-  //   		var img = '<img src="'+i.media_url+'"/>'
-  //   	}
-  //   });
 		L.marker([coordinates[1], coordinates[0]]).addTo(T.map)
 		.bindPopup(data.text)
 		.openPopup();
