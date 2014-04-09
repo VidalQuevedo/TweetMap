@@ -56,10 +56,10 @@ var T = {};
 			L.marker([coordinates[1], coordinates[0]]).addTo(T.map)
 			.bindPopup(data.text)
 			.openPopup();
-		});
+		})
 		.on('disconnect', function(){
 			// Display a warning message
-		})
+		});
 
 	T.socket = socket;
 
