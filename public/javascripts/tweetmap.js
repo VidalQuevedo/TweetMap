@@ -32,41 +32,70 @@ var T = {};
 (function($, T){
 
 	var socket = io.connect('http://localhost:8080');
-	
-	/**
-	 * Send list of terms to server
- 	*/
+
 	var emitTerms = function(){
 		var terms = $('#s').val().split(',');
-		socket.emit('terms', {'terms':terms});		
+		socket.emit('terms', {'terms':terms});
+	};
+
+	var emitDisconnect = function(){
+		socket.emit('stop_stream');
 	}
-
-
-	// On connect, send list of terms to server
-	// socket.on('connect', emitTerms());
 
 	// On submit, send list of terms to server
 	$('#search-form').on('submit', function(e){
-		console.log('submit');
 		e.preventDefault();
-		emitTerms();
+
+		// if no terms are being sent, return false
+		if ($('#s').val() == '') return false;
+
+		if ($('#search-form :submit').hasClass('btn-success')){
+
+			// Send terms to socket
+			emitTerms();
+
+			//disable #s
+			$('#s').attr('disabled','disabled');
+
+			//display pulsating icon
+			$("#pulsating-icon").css('display', 'block');
+
+			// toggle classes
+			$('#search-form :submit').toggleClass('btn-success btn-danger');
+			$('#search-form :submit span').toggleClass('glyphicon-play glyphicon-stop');			
+
+	} else if ($('#search-form :submit').hasClass('btn-danger')){
+			
+			// Emit disconnect
+			emitDisconnect();
+			
+			//enable #s
+			$('#s').removeAttr('disabled');
+
+			//hide pulsating icon
+			$("#pulsating-icon").css('display', 'none');
+
+			// toggle classes
+			$('#search-form :submit').toggleClass('btn-danger btn-success');
+			$('#search-form :submit span').toggleClass('glyphicon-stop glyphicon-play');
+
+		}
+		
+
 	});
 	
-	socket.on('tweet', function (data) {
+	socket
+	.on('tweet', function (data) {
+		console.log(data.text);
+		var coordinates = data.coordinates.coordinates;
 
-    console.log(data.text);
-    var coordinates = data.coordinates.coordinates;
-
-  //   media = data.entities.media;
-  //   media.forEach(function(i){
-  //   	if(i.type == "photo"){
-  //   		var img = '<img src="'+i.media_url+'"/>'
-  //   	}
-  //   });
 		L.marker([coordinates[1], coordinates[0]]).addTo(T.map)
 		.bindPopup(data.text)
 		.openPopup();
-	});
+	})
+	.on('disconnect', function(){
+			// Display a warning message
+		});
 
 	T.socket = socket;
 

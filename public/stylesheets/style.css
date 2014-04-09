@@ -5,3 +5,65 @@
 	margin-bottom:0;
 	border-radius: 0;
 }
+#pulsating-icon {
+	font-size: 1.1em;
+	display:none;
+}
+.pulse {
+	-webkit-animation: pulse 2s linear infinite;
+	-moz-animation: pulse 2s linear infinite;
+	-ms-animation: pulse 2s linear infinite;
+	animation: pulse 2s linear infinite;
+}
+
+@keyframes "pulse" {
+ 0% {
+    color: rgba(255,255,255, 0.2);
+ }
+ 50% {
+    color: rgba(255,255,255,1);
+ }
+ 100% {
+    color: rgba(255,255,255,0.2);
+ }
+
+}
+
+@-moz-keyframes pulse {
+ 0% {
+   color: rgba(255,255,255, 0.2);
+ }
+ 50% {
+   color: rgba(255,255,255,1);
+ }
+ 100% {
+   color: rgba(255,255,255,0.2);
+ }
+
+}
+
+@-webkit-keyframes "pulse" {
+ 0% {
+   color: rgba(255,255,255, 0.2);
+ }
+ 50% {
+   color: rgba(255,255,255,1);
+ }
+ 100% {
+   color: rgba(255,255,255,0.2);
+ }
+
+}
+
+@-ms-keyframes "pulse" {
+ 0% {
+   color: rgba(255,255,255, 0.2);
+ }
+ 50% {
+   color: rgba(255,255,255,1);
+ }
+ 100% {
+   color: rgba(255,255,255,0.2);
+ }
+
+}

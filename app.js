@@ -47,7 +47,8 @@ MongoClient.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port +
 
 			// The 'terms' event is triggered by 
 			// the client on connect
-			socket.on('terms', function(data){
+			socket
+				.on('terms', function(data){
 
 				console.log('Terms received:');
 				console.log(data.terms);
@@ -57,22 +58,51 @@ MongoClient.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port +
 					track: data.terms,
 					language:"en"
 				});
+				console.log('Stream has been started');
 
-				stream.on('tweet', function(tweet){
-					
-					// broadcast
-					if(tweet.coordinates !== null){
-						console.log(tweet.text);
-						io.sockets.emit('tweet',tweet);
-					}
-					
-					// Optional
-					// db.collection('tweets').insert(tweet, function(err, doc){
-					// 	if (err) throw err;
-					// 	// console.log(doc);
-					// });
+				stream
+					.on('tweet', function(tweet){
+						
+						// broadcast
+						if(tweet.coordinates !== null){
+							// console.log(tweet.text);
+							io.sockets.emit('tweet',tweet);
+						}
+						
+						// Optional
+						// db.collection('tweets').insert(tweet, function(err, doc){
+						// 	if (err) throw err;
+						// 	// console.log(doc);
+						// });
+					})
+					.on('limit', function(limitMessage){
+						console.log(limitMessage);
+						
+						// stop stream
+						this.stop();
+
+						// disconnect socket
+						socket.emit('disconnect');
+						
+						return false;
+					})
+					.on('disconnect', function(disconnectMessage){
+						console.log(disconnectMessage);
+						
+						// disconnect socket
+						socket.emit('disconnect');
+
+						return false;
+					});
+
+					// assign stream to socket, so it can be used later
+					this.stream = stream;
+
+				})
+				.on('stop_stream', function(){
+					this.stream.stop();
+					console.log('stream has been closed');
 				});
-		});
 
 		});
 
@@ -80,6 +110,6 @@ MongoClient.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port +
 		http.createServer(app).listen(config.port, function(){
 			console.log('Express server listening on port ' + config.port);
 		});
-	
-}
+
+	}
 });
