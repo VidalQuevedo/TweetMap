@@ -58,21 +58,41 @@ MongoClient.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port +
 					language:"en"
 				});
 
-				stream.on('tweet', function(tweet){
-					
-					// broadcast
-					if(tweet.coordinates !== null){
-						console.log(tweet.text);
-						io.sockets.emit('tweet',tweet);
-					}
-					
-					// Optional
-					// db.collection('tweets').insert(tweet, function(err, doc){
-					// 	if (err) throw err;
-					// 	// console.log(doc);
-					// });
-				});
-		});
+				stream
+					.on('tweet', function(tweet){
+						
+						// broadcast
+						if(tweet.coordinates !== null){
+							console.log(tweet.text);
+							io.sockets.emit('tweet',tweet);
+						}
+						
+						// Optional
+						// db.collection('tweets').insert(tweet, function(err, doc){
+						// 	if (err) throw err;
+						// 	// console.log(doc);
+						// });
+					})
+					.on('limit', function(limitMessage){
+						console.log(limitMessage);
+						
+						// stop stream
+						this.stop();
+
+						// disconnect socket
+						socket.emit('disconnect');
+						
+						return false;
+					})
+					.on('disconnect', function(disconnectMessage){
+						console.log(disconnectMessage);
+						
+						// disconnect socket
+						socket.emit('disconnect');
+						
+						return false;
+					});
+			});
 
 		});
 
@@ -80,6 +100,6 @@ MongoClient.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port +
 		http.createServer(app).listen(config.port, function(){
 			console.log('Express server listening on port ' + config.port);
 		});
-	
-}
+
+	}
 });

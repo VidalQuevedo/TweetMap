@@ -48,15 +48,18 @@ var T = {};
 		emitTerms();
 	});
 	
-	socket.on('tweet', function (data) {
+	socket
+		.on('tweet', function (data) {
+	    console.log(data.text);
+	    var coordinates = data.coordinates.coordinates;
 
-    console.log(data.text);
-    var coordinates = data.coordinates.coordinates;
-
-		L.marker([coordinates[1], coordinates[0]]).addTo(T.map)
-		.bindPopup(data.text)
-		.openPopup();
-	});
+			L.marker([coordinates[1], coordinates[0]]).addTo(T.map)
+			.bindPopup(data.text)
+			.openPopup();
+		});
+		.on('disconnect', function(){
+			// Display a warning message
+		})
 
 	T.socket = socket;
 
