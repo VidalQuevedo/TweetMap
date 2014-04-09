@@ -45,6 +45,10 @@ var T = {};
 	// On submit, send list of terms to server
 	$('#search-form').on('submit', function(e){
 		e.preventDefault();
+
+		// if empty, return false
+		if ($('#s').val() == '') return false;
+
 		if ($('#search-form :submit').hasClass('btn-success')){
 			// Send terms to socket
 			emitTerms();
