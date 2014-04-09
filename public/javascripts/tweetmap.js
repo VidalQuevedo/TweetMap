@@ -50,6 +50,7 @@ var T = {};
 		if ($('#s').val() == '') return false;
 
 		if ($('#search-form :submit').hasClass('btn-success')){
+
 			// Send terms to socket
 			emitTerms();
 		} else if ($('#search-form :submit').hasClass('btn-danger')){
@@ -57,8 +58,9 @@ var T = {};
 			//emitDisconnect();
 		}
 		
-		// Set #s class to btn-alert
+		// toggle classes
 		$('#search-form :submit').toggleClass('btn-danger');
+		$('#search-form :submit span').toggleClass('glyphicon-stop');
 	});
 	
 	socket
