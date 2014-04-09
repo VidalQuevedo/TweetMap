@@ -32,32 +32,41 @@ var T = {};
 (function($, T){
 
 	var socket = io.connect('http://localhost:8080');
-	
-	/**
-	 * Send list of terms to server
- 	*/
+
 	var emitTerms = function(){
 		var terms = $('#s').val().split(',');
-		socket.emit('terms', {'terms':terms});		
+		socket.emit('terms', {'terms':terms});
+	};
+
+	var emitDisconnect = function(){
+		socket.emit('disconnect');
 	}
 
 	// On submit, send list of terms to server
 	$('#search-form').on('submit', function(e){
-		console.log('submit');
 		e.preventDefault();
-		emitTerms();
+		if ($('#search-form :submit').hasClass('btn-success')){
+			// Send terms to socket
+			emitTerms();
+		} else if ($('#search-form :submit').hasClass('btn-danger')){
+			// Emit disconnect
+			//emitDisconnect();
+		}
+		
+		// Set #s class to btn-alert
+		$('#search-form :submit').toggleClass('btn-danger');
 	});
 	
 	socket
-		.on('tweet', function (data) {
-	    console.log(data.text);
-	    var coordinates = data.coordinates.coordinates;
+	.on('tweet', function (data) {
+		console.log(data.text);
+		var coordinates = data.coordinates.coordinates;
 
-			L.marker([coordinates[1], coordinates[0]]).addTo(T.map)
-			.bindPopup(data.text)
-			.openPopup();
-		})
-		.on('disconnect', function(){
+		L.marker([coordinates[1], coordinates[0]]).addTo(T.map)
+		.bindPopup(data.text)
+		.openPopup();
+	})
+	.on('disconnect', function(){
 			// Display a warning message
 		});
 
