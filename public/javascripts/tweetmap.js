@@ -41,10 +41,6 @@ var T = {};
 		socket.emit('terms', {'terms':terms});		
 	}
 
-
-	// On connect, send list of terms to server
-	// socket.on('connect', emitTerms());
-
 	// On submit, send list of terms to server
 	$('#search-form').on('submit', function(e){
 		console.log('submit');
