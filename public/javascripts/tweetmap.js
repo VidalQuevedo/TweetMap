@@ -1,9 +1,6 @@
 // Init global object T
 var T = {};
 
-
-
-
 // Map
 (function($, T){
 
@@ -40,7 +37,7 @@ var T = {};
 	 * Send list of terms to server
  	*/
 	var emitTerms = function(){
-		var terms = $('#search').val().split(',');
+		var terms = $('#s').val().split(',');
 		socket.emit('terms', {'terms':terms});		
 	}
 
