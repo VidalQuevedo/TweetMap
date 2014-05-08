@@ -86,11 +86,11 @@ var T = {};
 	
 	socket
 	.on('tweet', function (data) {
-		console.log(data.text);
+		// console.log(data.text);
 		var coordinates = data.coordinates.coordinates;
 
 		L.marker([coordinates[1], coordinates[0]]).addTo(T.map)
-		.bindPopup(data.text)
+		.bindPopup('<a href="https://twitter.com/' + data.user.screenname +'/status/' + data.id_str + '" target="_blank">' + data.text + '</a>')
 		.openPopup();
 	})
 	.on('disconnect', function(){
